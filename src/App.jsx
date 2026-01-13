@@ -31,14 +31,17 @@ function App() {
   const [sortBy, setSortBy] = useState('dateApplied')
   const [sortOrder, setSortOrder] = useState('desc')
 
-  // Save applications to localStorage whenever the applications state changes
+  // Automatically save applications to localStorage whenever the applications state changes
+  // This useEffect triggers on: add, edit, delete operations
+  // The dependency array [applications] ensures it runs whenever applications is updated
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(applications))
+      // Data is now persisted - changes will survive page refresh
     } catch (error) {
       console.error('Error saving applications to localStorage:', error)
     }
-  }, [applications])
+  }, [applications]) // Dependency: saves whenever applications array changes
 
   const generateUniqueId = () => {
     return Date.now().toString(36) + Math.random().toString(36).substr(2)
@@ -50,6 +53,7 @@ function App() {
       ...newAppData
     }
     setApplications([newApplication, ...applications])
+    // useEffect will automatically save to localStorage when applications state updates
   }
 
   const updateApplication = (updatedAppData) => {
@@ -59,11 +63,12 @@ function App() {
     ))
     // Clear editing state after update
     setEditingApplication(null)
-    // Note: useEffect will automatically save to localStorage when applications state changes
+    // useEffect will automatically save to localStorage when applications state updates
   }
 
   const deleteApplication = (id) => {
     setApplications(applications.filter(app => app.id !== id))
+    // useEffect will automatically save to localStorage when applications state updates
   }
 
   const startEditing = (application) => {
