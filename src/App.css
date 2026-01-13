@@ -143,16 +143,67 @@
 }
 
 /* Applications Section */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
 .applications-section h2 {
-  margin: 0 0 0.5rem;
+  margin: 0;
   font-size: 1.5rem;
   color: #1e3a5f;
+}
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-controls label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+.status-filter {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #1e293b;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.status-filter:focus {
+  outline: none;
+  border-color: #2d5a87;
+  box-shadow: 0 0 0 3px rgba(45, 90, 135, 0.1);
 }
 
 .applications-count {
   margin: 0 0 1.5rem;
   color: #64748b;
   font-size: 0.95rem;
+}
+
+.no-applications {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.no-applications p {
+  margin: 0;
+  font-size: 1rem;
 }
 
 /* Applications List */

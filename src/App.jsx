@@ -16,6 +16,7 @@ function App() {
     return initialApplications
   })
   const [editingApplication, setEditingApplication] = useState(null)
+  const [statusFilter, setStatusFilter] = useState('All')
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(applications))
@@ -55,17 +56,25 @@ function App() {
     setEditingApplication(null)
   }
 
+  // Filter applications based on selected status
+  const filteredApplications = statusFilter === 'All' 
+    ? applications 
+    : applications.filter(app => app.status === statusFilter)
+
   return (
     <div className="app">
       <Header />
       <MainContent 
-        applications={applications} 
+        applications={filteredApplications}
+        allApplications={applications}
         onAddApplication={addApplication}
         onUpdateApplication={updateApplication}
         onDeleteApplication={deleteApplication}
         editingApplication={editingApplication}
         onStartEditing={startEditing}
         onCancelEditing={cancelEditing}
+        statusFilter={statusFilter}
+        onStatusFilterChange={setStatusFilter}
       />
       <Footer />
     </div>
