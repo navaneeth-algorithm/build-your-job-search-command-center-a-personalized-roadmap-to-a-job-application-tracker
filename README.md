@@ -1,17 +1,8 @@
-# Phase 1: Phase 1: Foundations & Core Display
+# React + Vite
 
-**Estimated Duration:** 1 week
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-This phase contains the following milestones and tasks:
+Currently, two official plugins are available:
 
-## Milestone 1: Project Setup & Basic UI
-
-- [ ] Task 1: Initialize New React Project with Vite
-- [ ] Task 2: Initialize Git Repository and First Commit
-- [ ] Task 3: Create Basic App Structure (HTML & CSS)
-
-## Milestone 2: Displaying Static Application List
-
-- [ ] Task 1: Define Static Job Application Data
-- [ ] Task 2: Render Static Application List to UI
-
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
