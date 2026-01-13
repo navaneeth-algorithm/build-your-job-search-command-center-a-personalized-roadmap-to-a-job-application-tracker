@@ -34,10 +34,13 @@ function App() {
   }
 
   const updateApplication = (updatedAppData) => {
+    // Update the application in state array by ID
     setApplications(applications.map(app => 
       app.id === updatedAppData.id ? updatedAppData : app
     ))
+    // Clear editing state after update
     setEditingApplication(null)
+    // Note: useEffect will automatically save to localStorage when applications state changes
   }
 
   const deleteApplication = (id) => {
