@@ -1,20 +1,51 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-function ApplicationForm({ onAddApplication }) {
+function ApplicationForm({ 
+  onAddApplication, 
+  onUpdateApplication, 
+  editingApplication,
+  onCancelEditing 
+}) {
   const [company, setCompany] = useState('')
   const [role, setRole] = useState('')
   const [status, setStatus] = useState('')
   const [dateApplied, setDateApplied] = useState('')
 
+  const isEditing = editingApplication !== null
+
+  useEffect(() => {
+    if (editingApplication) {
+      setCompany(editingApplication.company)
+      setRole(editingApplication.role)
+      setStatus(editingApplication.status)
+      setDateApplied(editingApplication.dateApplied)
+    } else {
+      setCompany('')
+      setRole('')
+      setStatus('')
+      setDateApplied('')
+    }
+  }, [editingApplication])
+
   const handleSubmit = (e) => {
     e.preventDefault()
     
-    onAddApplication({
-      company,
-      role,
-      status,
-      dateApplied
-    })
+    if (isEditing) {
+      onUpdateApplication({
+        id: editingApplication.id,
+        company,
+        role,
+        status,
+        dateApplied
+      })
+    } else {
+      onAddApplication({
+        company,
+        role,
+        status,
+        dateApplied
+      })
+    }
 
     // Clear form after submission
     setCompany('')
@@ -23,9 +54,17 @@ function ApplicationForm({ onAddApplication }) {
     setDateApplied('')
   }
 
+  const handleCancel = () => {
+    onCancelEditing()
+    setCompany('')
+    setRole('')
+    setStatus('')
+    setDateApplied('')
+  }
+
   return (
     <form className="application-form" onSubmit={handleSubmit}>
-      <h3>Add New Application</h3>
+      <h3>{isEditing ? 'Edit Application' : 'Add New Application'}</h3>
       
       <div className="form-group">
         <label htmlFor="company">Company</label>
@@ -82,9 +121,16 @@ function ApplicationForm({ onAddApplication }) {
         />
       </div>
 
-      <button type="submit" className="submit-btn">
-        Add Application
-      </button>
+      <div className="form-buttons">
+        <button type="submit" className="submit-btn">
+          {isEditing ? 'Update Application' : 'Add Application'}
+        </button>
+        {isEditing && (
+          <button type="button" className="cancel-btn" onClick={handleCancel}>
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   )
 }

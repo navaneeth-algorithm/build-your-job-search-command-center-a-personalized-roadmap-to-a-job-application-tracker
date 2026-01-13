@@ -15,6 +15,7 @@ function App() {
     }
     return initialApplications
   })
+  const [editingApplication, setEditingApplication] = useState(null)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(applications))
@@ -32,8 +33,23 @@ function App() {
     setApplications([newApplication, ...applications])
   }
 
+  const updateApplication = (updatedAppData) => {
+    setApplications(applications.map(app => 
+      app.id === updatedAppData.id ? updatedAppData : app
+    ))
+    setEditingApplication(null)
+  }
+
   const deleteApplication = (id) => {
     setApplications(applications.filter(app => app.id !== id))
+  }
+
+  const startEditing = (application) => {
+    setEditingApplication(application)
+  }
+
+  const cancelEditing = () => {
+    setEditingApplication(null)
   }
 
   return (
@@ -42,7 +58,11 @@ function App() {
       <MainContent 
         applications={applications} 
         onAddApplication={addApplication}
+        onUpdateApplication={updateApplication}
         onDeleteApplication={deleteApplication}
+        editingApplication={editingApplication}
+        onStartEditing={startEditing}
+        onCancelEditing={cancelEditing}
       />
       <Footer />
     </div>

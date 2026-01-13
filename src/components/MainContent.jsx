@@ -1,10 +1,23 @@
 import ApplicationForm from './ApplicationForm'
 
-function MainContent({ applications, onAddApplication, onDeleteApplication }) {
+function MainContent({ 
+  applications, 
+  onAddApplication, 
+  onUpdateApplication,
+  onDeleteApplication,
+  editingApplication,
+  onStartEditing,
+  onCancelEditing
+}) {
   return (
     <main className="main-content">
       <div className="applications-container">
-        <ApplicationForm onAddApplication={onAddApplication} />
+        <ApplicationForm 
+          onAddApplication={onAddApplication}
+          onUpdateApplication={onUpdateApplication}
+          editingApplication={editingApplication}
+          onCancelEditing={onCancelEditing}
+        />
         
         <section className="applications-section">
           <h2>Your Applications</h2>
@@ -22,12 +35,20 @@ function MainContent({ applications, onAddApplication, onDeleteApplication }) {
                 <p className="role-title">{app.role}</p>
                 <div className="application-footer">
                   <p className="date-applied">Applied: {app.dateApplied}</p>
-                  <button 
-                    className="delete-btn"
-                    onClick={() => onDeleteApplication(app.id)}
-                  >
-                    Delete
-                  </button>
+                  <div className="action-buttons">
+                    <button 
+                      className="edit-btn"
+                      onClick={() => onStartEditing(app)}
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      className="delete-btn"
+                      onClick={() => onDeleteApplication(app.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </li>
             ))}
