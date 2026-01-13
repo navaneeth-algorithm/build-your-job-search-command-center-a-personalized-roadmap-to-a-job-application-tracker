@@ -1,9 +1,9 @@
-function MainContent() {
+function MainContent({ applications }) {
   return (
     <main className="main-content">
       <div className="content-placeholder">
         <h2>Your Applications</h2>
-        <p>Job applications will appear here.</p>
+        <p>{applications.length} job applications tracked.</p>
       </div>
     </main>
   )
