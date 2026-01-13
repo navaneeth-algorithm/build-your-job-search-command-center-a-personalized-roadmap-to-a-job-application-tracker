@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function ApplicationForm() {
+function ApplicationForm({ onAddApplication }) {
   const [company, setCompany] = useState('')
   const [role, setRole] = useState('')
   const [status, setStatus] = useState('')
@@ -8,12 +8,19 @@ function ApplicationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('Form submitted:', {
+    
+    onAddApplication({
       company,
       role,
       status,
       dateApplied
     })
+
+    // Clear form after submission
+    setCompany('')
+    setRole('')
+    setStatus('')
+    setDateApplied('')
   }
 
   return (

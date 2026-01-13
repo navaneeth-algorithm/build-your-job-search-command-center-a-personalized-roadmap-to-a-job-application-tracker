@@ -1,10 +1,10 @@
 import ApplicationForm from './ApplicationForm'
 
-function MainContent({ applications }) {
+function MainContent({ applications, onAddApplication }) {
   return (
     <main className="main-content">
       <div className="applications-container">
-        <ApplicationForm />
+        <ApplicationForm onAddApplication={onAddApplication} />
         
         <section className="applications-section">
           <h2>Your Applications</h2>
