@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import MainContent from './components/MainContent'
 import Footer from './components/Footer'
+import Notification from './components/Notification'
 import initialApplications from './data/jobApplications'
 import './App.css'
 
@@ -30,6 +31,7 @@ function App() {
   const [statusFilter, setStatusFilter] = useState('All')
   const [sortBy, setSortBy] = useState('dateApplied')
   const [sortOrder, setSortOrder] = useState('desc')
+  const [notification, setNotification] = useState({ message: '', type: '' })
 
   // Automatically save applications to localStorage whenever the applications state changes
   // This useEffect triggers on: add, edit, delete operations
@@ -40,35 +42,60 @@ function App() {
       // Data is now persisted - changes will survive page refresh
     } catch (error) {
       console.error('Error saving applications to localStorage:', error)
+      showNotification('Failed to save data. Please check your browser storage settings.', 'error')
     }
   }, [applications]) // Dependency: saves whenever applications array changes
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ message, type })
+  }
+
+  const hideNotification = () => {
+    setNotification({ message: '', type: '' })
+  }
 
   const generateUniqueId = () => {
     return Date.now().toString(36) + Math.random().toString(36).substr(2)
   }
 
   const addApplication = (newAppData) => {
-    const newApplication = {
-      id: generateUniqueId(),
-      ...newAppData
+    try {
+      const newApplication = {
+        id: generateUniqueId(),
+        ...newAppData
+      }
+      setApplications([newApplication, ...applications])
+      showNotification('Application added successfully!', 'success')
+    } catch (error) {
+      console.error('Error adding application:', error)
+      showNotification('Failed to add application. Please try again.', 'error')
     }
-    setApplications([newApplication, ...applications])
-    // useEffect will automatically save to localStorage when applications state updates
   }
 
   const updateApplication = (updatedAppData) => {
-    // Update the application in state array by ID
-    setApplications(applications.map(app => 
-      app.id === updatedAppData.id ? updatedAppData : app
-    ))
-    // Clear editing state after update
-    setEditingApplication(null)
-    // useEffect will automatically save to localStorage when applications state updates
+    try {
+      // Update the application in state array by ID
+      setApplications(applications.map(app => 
+        app.id === updatedAppData.id ? updatedAppData : app
+      ))
+      // Clear editing state after update
+      setEditingApplication(null)
+      showNotification('Application updated successfully!', 'success')
+    } catch (error) {
+      console.error('Error updating application:', error)
+      showNotification('Failed to update application. Please try again.', 'error')
+    }
   }
 
   const deleteApplication = (id) => {
-    setApplications(applications.filter(app => app.id !== id))
-    // useEffect will automatically save to localStorage when applications state updates
+    try {
+      const application = applications.find(app => app.id === id)
+      setApplications(applications.filter(app => app.id !== id))
+      showNotification(`${application?.company || 'Application'} deleted successfully!`, 'success')
+    } catch (error) {
+      console.error('Error deleting application:', error)
+      showNotification('Failed to delete application. Please try again.', 'error')
+    }
   }
 
   const startEditing = (application) => {
@@ -102,6 +129,11 @@ function App() {
   return (
     <div className="app">
       <Header />
+      <Notification
+        message={notification.message}
+        type={notification.type}
+        onClose={hideNotification}
+      />
       <MainContent 
         applications={sortedApplications}
         allApplications={applications}
