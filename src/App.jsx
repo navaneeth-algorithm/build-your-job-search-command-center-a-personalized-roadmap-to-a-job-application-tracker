@@ -8,11 +8,22 @@ import './App.css'
 const STORAGE_KEY = 'jobApplications'
 
 function App() {
+  // Load saved applications from localStorage on component mount
+  // Uses lazy initialization to read from localStorage only once during initial render
   const [applications, setApplications] = useState(() => {
-    const savedApplications = localStorage.getItem(STORAGE_KEY)
-    if (savedApplications) {
-      return JSON.parse(savedApplications)
+    try {
+      const savedApplications = localStorage.getItem(STORAGE_KEY)
+      if (savedApplications) {
+        const parsed = JSON.parse(savedApplications)
+        // Validate that parsed data is an array
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed
+        }
+      }
+    } catch (error) {
+      console.error('Error loading applications from localStorage:', error)
     }
+    // Fallback to initial sample data if no saved data exists or parsing fails
     return initialApplications
   })
   const [editingApplication, setEditingApplication] = useState(null)
@@ -20,8 +31,13 @@ function App() {
   const [sortBy, setSortBy] = useState('dateApplied')
   const [sortOrder, setSortOrder] = useState('desc')
 
+  // Save applications to localStorage whenever the applications state changes
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(applications))
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(applications))
+    } catch (error) {
+      console.error('Error saving applications to localStorage:', error)
+    }
   }, [applications])
 
   const generateUniqueId = () => {
