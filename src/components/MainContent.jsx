@@ -1,6 +1,6 @@
 import ApplicationForm from './ApplicationForm'
 
-function MainContent({ applications, onAddApplication }) {
+function MainContent({ applications, onAddApplication, onDeleteApplication }) {
   return (
     <main className="main-content">
       <div className="applications-container">
@@ -20,7 +20,15 @@ function MainContent({ applications, onAddApplication }) {
                   </span>
                 </div>
                 <p className="role-title">{app.role}</p>
-                <p className="date-applied">Applied: {app.dateApplied}</p>
+                <div className="application-footer">
+                  <p className="date-applied">Applied: {app.dateApplied}</p>
+                  <button 
+                    className="delete-btn"
+                    onClick={() => onDeleteApplication(app.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

@@ -32,12 +32,17 @@ function App() {
     setApplications([newApplication, ...applications])
   }
 
+  const deleteApplication = (id) => {
+    setApplications(applications.filter(app => app.id !== id))
+  }
+
   return (
     <div className="app">
       <Header />
       <MainContent 
         applications={applications} 
-        onAddApplication={addApplication} 
+        onAddApplication={addApplication}
+        onDeleteApplication={deleteApplication}
       />
       <Footer />
     </div>
