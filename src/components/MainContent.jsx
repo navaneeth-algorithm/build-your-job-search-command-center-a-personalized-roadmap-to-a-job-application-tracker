@@ -10,7 +10,11 @@ function MainContent({
   onStartEditing,
   onCancelEditing,
   statusFilter,
-  onStatusFilterChange
+  onStatusFilterChange,
+  sortBy,
+  onSortByChange,
+  sortOrder,
+  onSortOrderChange
 }) {
   return (
     <main className="main-content">
@@ -25,20 +29,52 @@ function MainContent({
         <section className="applications-section">
           <div className="section-header">
             <h2>Your Applications</h2>
-            <div className="filter-controls">
-              <label htmlFor="status-filter">Filter by Status:</label>
-              <select
-                id="status-filter"
-                className="status-filter"
-                value={statusFilter}
-                onChange={(e) => onStatusFilterChange(e.target.value)}
-              >
-                <option value="All">All</option>
-                <option value="Applied">Applied</option>
-                <option value="Interview">Interview</option>
-                <option value="Offer">Offer</option>
-                <option value="Rejected">Rejected</option>
-              </select>
+            <div className="controls-row">
+              <div className="filter-controls">
+                <label htmlFor="status-filter">Filter by Status:</label>
+                <select
+                  id="status-filter"
+                  className="status-filter"
+                  value={statusFilter}
+                  onChange={(e) => onStatusFilterChange(e.target.value)}
+                >
+                  <option value="All">All</option>
+                  <option value="Applied">Applied</option>
+                  <option value="Interview">Interview</option>
+                  <option value="Offer">Offer</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+              <div className="sort-controls">
+                <label htmlFor="sort-by">Sort by:</label>
+                <select
+                  id="sort-by"
+                  className="sort-select"
+                  value={sortBy}
+                  onChange={(e) => onSortByChange(e.target.value)}
+                >
+                  <option value="dateApplied">Date Applied</option>
+                  <option value="company">Company Name</option>
+                </select>
+                <div className="sort-order-buttons">
+                  <button
+                    type="button"
+                    className={`sort-btn ${sortOrder === 'asc' ? 'active' : ''}`}
+                    onClick={() => onSortOrderChange('asc')}
+                    title="Ascending"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    className={`sort-btn ${sortOrder === 'desc' ? 'active' : ''}`}
+                    onClick={() => onSortOrderChange('desc')}
+                    title="Descending"
+                  >
+                    ↓
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           <p className="applications-count">

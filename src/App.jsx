@@ -17,6 +17,8 @@ function App() {
   })
   const [editingApplication, setEditingApplication] = useState(null)
   const [statusFilter, setStatusFilter] = useState('All')
+  const [sortBy, setSortBy] = useState('dateApplied')
+  const [sortOrder, setSortOrder] = useState('desc')
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(applications))
@@ -57,15 +59,30 @@ function App() {
   }
 
   // Filter applications based on selected status
-  const filteredApplications = statusFilter === 'All' 
+  let filteredApplications = statusFilter === 'All' 
     ? applications 
     : applications.filter(app => app.status === statusFilter)
+
+  // Sort applications
+  const sortedApplications = [...filteredApplications].sort((a, b) => {
+    let comparison = 0
+
+    if (sortBy === 'dateApplied') {
+      const dateA = new Date(a.dateApplied)
+      const dateB = new Date(b.dateApplied)
+      comparison = dateA - dateB
+    } else if (sortBy === 'company') {
+      comparison = a.company.localeCompare(b.company)
+    }
+
+    return sortOrder === 'asc' ? comparison : -comparison
+  })
 
   return (
     <div className="app">
       <Header />
       <MainContent 
-        applications={filteredApplications}
+        applications={sortedApplications}
         allApplications={applications}
         onAddApplication={addApplication}
         onUpdateApplication={updateApplication}
@@ -75,6 +92,10 @@ function App() {
         onCancelEditing={cancelEditing}
         statusFilter={statusFilter}
         onStatusFilterChange={setStatusFilter}
+        sortBy={sortBy}
+        onSortByChange={setSortBy}
+        sortOrder={sortOrder}
+        onSortOrderChange={setSortOrder}
       />
       <Footer />
     </div>
